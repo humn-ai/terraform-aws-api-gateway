@@ -147,3 +147,39 @@ variable "aws_assume_role_arn" {
   type        = string
   default     = ""
 }
+
+variable "create_custom_domain" {
+  description = "Conditional trigger represented as a bool to create a custom DNS, default is 'false'."
+  type        = bool
+  default     = false
+}
+
+variable "certificate_arn" {
+  description = "The ARN for an AWS-managed certificate. AWS Certificate Manager is the only supported source. Used when an edge-optimized domain name is desired."
+  type        = string
+  default     = ""
+}
+
+variable "zone_id" {
+  description = "The ID of the Route 53 Hosted Zone."
+  type        = string
+  default     = ""
+}
+
+variable "sub_domain" {
+  description = "The subdomain of the api gateway."
+  type        = string
+  default     = ""
+}
+
+variable "domain_name" {
+  description = "The fully-qualified domain name to register."
+  type        = string
+  default     = ""
+}
+
+variable "security_policy" {
+  default     = "TLS_1_2"
+  description = "The Transport Layer Security (TLS) version + cipher suite for this DomainName. The valid values are TLS_1_0 and TLS_1_2. Must be configured to perform drift detection."
+  type        = string
+}

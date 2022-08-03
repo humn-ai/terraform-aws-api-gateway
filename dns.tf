@@ -4,10 +4,11 @@ locals {
 
 
 resource "aws_api_gateway_domain_name" "dns" {
-  for_each        = local.enabled && var.create_custom_domain && var.endpoint_type != "PRIVATE" ? toset([local.address]) : toset([])
-  certificate_arn = var.certificate_arn
-  domain_name     = each.value
-  security_policy = var.security_policy
+  for_each                 = local.enabled && var.create_custom_domain && var.endpoint_type != "PRIVATE" ? toset([local.address]) : toset([])
+  certificate_arn          = var.endpoint_type == "EDGE" ? var.certificate_arn : ""
+  regional_certificate_arn = var.endpoint_type == "REGIONAL" ? var.certificate_arn : ""
+  domain_name              = each.value
+  security_policy          = var.security_policy
   endpoint_configuration {
     types = [var.endpoint_type]
   }

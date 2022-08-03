@@ -28,7 +28,7 @@ resource "aws_route53_record" "dns" {
 }
 
 resource "aws_api_gateway_base_path_mapping" "dns" {
-  count       = local.enabled && var.create_custom_domain && var.endpoint_type != "PRIVATE" ? 1 : 0
+  for_each    = local.enabled && var.create_custom_domain && var.endpoint_type != "PRIVATE" ? toset([local.address]) : toset([])
   api_id      = aws_api_gateway_rest_api.this[0].id
   stage_name  = aws_api_gateway_stage.this[0].stage_name
   domain_name = aws_api_gateway_domain_name.dns[each.value].domain_name

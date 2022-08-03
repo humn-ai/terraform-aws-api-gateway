@@ -27,6 +27,13 @@ resource "aws_route53_record" "dns" {
   }
 }
 
+resource "aws_api_gateway_base_path_mapping" "example" {
+  count       = local.enabled && var.create_custom_domain && var.endpoint_configuration != "PRIVATE" ? 1 : 0
+  api_id      = aws_api_gateway_rest_api.this[0].id
+  stage_name  = aws_api_gateway_stage.this[0].stage_name
+  domain_name = aws_api_gateway_domain_name.dns[each.value].domain_name
+}
+
 variable "create_custom_domain" {
   description = "Conditional trigger represented as a bool to create a custom DNS, default is 'false'."
   type        = bool

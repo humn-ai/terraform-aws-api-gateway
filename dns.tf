@@ -1,5 +1,5 @@
 locals {
-  address = "${var.subdomain}.${var.domain_name}"
+  address = "${var.sub_domain}.${var.domain_name}"
 }
 
 
@@ -27,7 +27,7 @@ resource "aws_route53_record" "dns" {
   }
 }
 
-resource "aws_api_gateway_base_path_mapping" "example" {
+resource "aws_api_gateway_base_path_mapping" "dns" {
   count       = local.enabled && var.create_custom_domain && var.endpoint_configuration != "PRIVATE" ? 1 : 0
   api_id      = aws_api_gateway_rest_api.this[0].id
   stage_name  = aws_api_gateway_stage.this[0].stage_name

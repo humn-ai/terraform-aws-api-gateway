@@ -3,7 +3,7 @@
 
 variable "endpoint_type" {
   type        = string
-  description = "The type of the endpoint. One of - PUBLIC, PRIVATE, REGIONAL"
+  description = "The type of the endpoint. One of - EDGE, PRIVATE, REGIONAL"
   default     = "REGIONAL"
 
   validation {

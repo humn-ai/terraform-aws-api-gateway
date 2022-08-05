@@ -1,14 +1,9 @@
 # See https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions.html for additional
 # configuration information.
-variable "openapi_config" {
-  description = "The OpenAPI specification for the API"
-  type        = any
-  default     = {}
-}
 
 variable "endpoint_type" {
   type        = string
-  description = "The type of the endpoint. One of - PUBLIC, PRIVATE, REGIONAL"
+  description = "The type of the endpoint. One of - EDGE, PRIVATE, REGIONAL"
   default     = "REGIONAL"
 
   validation {
@@ -78,6 +73,12 @@ variable "access_log_format" {
   EOF
 }
 
+variable "path_parts" {
+  type        = list(any)
+  default     = []
+  description = "The last path segment of this API resource."
+}
+
 variable "rest_api_policy" {
   description = "The IAM policy document for the API."
   type        = string
@@ -93,6 +94,17 @@ variable "gateway_responses" {
     response_parameters = list(any)
   }))
 }
+
+variable "models" {
+  description = "(Optional) - A list of objects that contain the desired Models for a REST API Gateway."
+  type = list(object({
+    name                = optional(string)
+    description         = optional(string)
+    content_type        = optional(string)
+    response_parameters = optional(string)
+  }))
+}
+
 
 variable "private_link_target_arns" {
   type        = list(string)
@@ -116,4 +128,70 @@ variable "stage_name" {
   type        = string
   default     = ""
   description = "The name of the stage"
+}
+
+variable "aws_region" {
+  description = "The AWS region (e.g. ap-southeast-2). Autoloaded from region.tfvars."
+  type        = string
+  default     = ""
+}
+
+variable "aws_account_id" {
+  description = "The AWS account id of the provider being deployed to (e.g. 12345678). Autoloaded from account.tfvars."
+  type        = string
+  default     = ""
+}
+
+variable "aws_assume_role_arn" {
+  description = "(Optional) - ARN of the IAM role when optionally connecting to AWS via assumed role. Autoloaded from account.tfvars."
+  type        = string
+  default     = ""
+}
+
+variable "create_custom_domain" {
+  description = "Conditional trigger represented as a bool to create a custom DNS, default is 'false'."
+  type        = bool
+  default     = false
+}
+
+variable "certificate_arn" {
+  description = "The ARN for an AWS-managed certificate. AWS Certificate Manager is the only supported source. Used when an edge-optimized domain name is desired."
+  type        = string
+  default     = ""
+}
+
+variable "zone_id" {
+  description = "The ID of the Route 53 Hosted Zone."
+  type        = string
+  default     = ""
+}
+
+variable "sub_domain" {
+  description = "The subdomain of the api gateway."
+  type        = string
+  default     = ""
+}
+
+variable "domain_name" {
+  description = "The fully-qualified domain name to register."
+  type        = string
+  default     = ""
+}
+
+variable "security_policy" {
+  default     = "TLS_1_2"
+  description = "The Transport Layer Security (TLS) version + cipher suite for this DomainName. The valid values are TLS_1_0 and TLS_1_2. Must be configured to perform drift detection."
+  type        = string
+}
+
+variable "description" {
+  default     = "Managed by Terraform"
+  type        = string
+  description = "Description of the REST API. If importing an OpenAPI specification via the body argument, this corresponds to the info.description field. If the argument value is provided and is different than the OpenAPI value, the argument value will override the OpenAPI value."
+}
+
+variable "vpc_endpoint_ids" {
+  default     = []
+  description = "Set of VPC Endpoint identifiers. It is only supported for PRIVATE endpoint type."
+  type        = list(any)
 }

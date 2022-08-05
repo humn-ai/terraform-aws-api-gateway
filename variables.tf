@@ -183,3 +183,9 @@ variable "security_policy" {
   description = "The Transport Layer Security (TLS) version + cipher suite for this DomainName. The valid values are TLS_1_0 and TLS_1_2. Must be configured to perform drift detection."
   type        = string
 }
+
+variable "description" {
+  default     = "Managed by Terraform"
+  type        = string
+  description = "Description of the REST API. If importing an OpenAPI specification via the body argument, this corresponds to the info.description field. If the argument value is provided and is different than the OpenAPI value, the argument value will override the OpenAPI value."
+}

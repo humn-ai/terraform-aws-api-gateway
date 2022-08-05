@@ -9,8 +9,9 @@ locals {
 resource "aws_api_gateway_rest_api" "this" {
   count = local.enabled ? 1 : 0
 
-  name = module.this.id
-  tags = module.this.tags
+  name        = module.this.id
+  description = var.description
+  tags        = module.this.tags
 
   endpoint_configuration {
     types = [var.endpoint_type]
